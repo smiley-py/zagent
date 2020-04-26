@@ -5,10 +5,10 @@ from src import CustomMenu, CustomScheduled
 
 TOKEN = '288fdafc07bf9783b6690e64266bc5fb29f07dda'
 AGENTNAME = 'test_agent_1'
-DURATION = 10
+DELAY = 10
 
 menu = CustomMenu()
-service1 = CustomScheduled(TOKEN, DURATION)
+service1 = CustomScheduled(TOKEN, DELAY)
 
 
 class MyShell(cmd.Cmd, object):

@@ -7,9 +7,9 @@ from .batch import CustomBatch
 
 
 class CustomScheduled():
-    def __init__(self, TOKEN, DURATION):
+    def __init__(self, TOKEN, DELAY):
         self.thread_a = CustomThread(
-            1, "Thread-1", TOKEN, DURATION)  # for each x seconds
+            1, "Thread-1", TOKEN, DELAY)  # for each x seconds
         self.msg = ''
 
     def start(self):
