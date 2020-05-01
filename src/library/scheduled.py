@@ -2,14 +2,12 @@
 import threading
 import datetime
 import time
-from .api import CustomApi
 from .batch import CustomBatch
 
 
 class CustomScheduled():
-    def __init__(self, TOKEN, DELAY):
-        self.thread_a = CustomThread(
-            1, "Thread-1", TOKEN, DELAY)  # for each x seconds
+    def __init__(self, API):
+        self.thread_a = CustomThread(1, "Thread-1", API)
         self.msg = ''
 
     def start(self):
@@ -38,17 +36,35 @@ class CustomScheduled():
 
 
 class CustomThread (threading.Thread):
-    def __init__(self, threadID, name, token, delay):
+    def __init__(self, threadID, name, API):
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name
-        self.token = token
-        self.delay = delay
+        self.delay = 10
+        self.api = API
+
         self.stoprequest = threading.Event()
 
     def run_batch_file(self):
-        batch = CustomBatch()
-        batch.launch()
+        self.api.login()
+        self.api.get_agent()
+
+        self.delay = int(self.api.delay)
+
+        if self.api.is_scheduled == "1":
+            dt = datetime.datetime.strptime(self.api.start_time.split('+')[0],
+                                            "%Y-%m-%dT%H:%M:%S")
+
+            if datetime.datetime.now() >= dt:
+                batch = CustomBatch(
+                    self.api.path, self.api.script_content, self.api.input_string)
+                batch.launch()
+
+                self.api.output = batch.output
+                self.api.result = batch.result
+                self.api.is_scheduled = 2
+
+                self.api.set_agent()
 
     def start(self):
         threading.Thread.start(self)

@@ -1,14 +1,16 @@
 import os
 import sys
 import cmd
-from src import CustomMenu, CustomScheduled
+from src import CustomApi, CustomMenu, CustomScheduled
 
-TOKEN = '288fdafc07bf9783b6690e64266bc5fb29f07dda'
-AGENTNAME = 'test_agent_1'
-DELAY = 10
+ID = '1'
+APIURL = 'http://127.0.0.1:8000/'
+USERNAME = 'admin'
+PASSWORD = 'admin'
 
+API = CustomApi(ID, APIURL, USERNAME, PASSWORD)
 menu = CustomMenu()
-service1 = CustomScheduled(TOKEN, DELAY)
+service1 = CustomScheduled(API)
 
 
 class MyShell(cmd.Cmd, object):
@@ -21,31 +23,19 @@ class MyShell(cmd.Cmd, object):
             print(item)
 
     def do_start(self, line):
-        if (TOKEN is ''):
-            print('Please enter token before service started')
-        else:
-            service1.start()
-            print('Scheduler Service started')
+        service1.start()
+        print('Scheduler Service started')
 
     def do_restart(self, line):
-        if (TOKEN is ''):
-            print('Please enter token before service restarted')
-        else:
-            service1.restart()
-            print('Schedular Service restarted')
+        service1.restart()
+        print('Schedular Service restarted')
 
     def do_stop(self, line):
-        if (TOKEN is ''):
-            print('Please login before service stopped')
-        else:
-            service1.stop()
-            print('Schedular Service stopped')
+        service1.stop()
+        print('Schedular Service stopped')
 
     def do_reset_config(self, line):
-        if (TOKEN is not ''):
-            print('Please enter token before reset configuration')
-        else:
-            print('All System Config was reset')
+        print('All System Config was reset')
 
     def do_prompt(self, line):
         "Change the interactive prompt"
