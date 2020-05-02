@@ -31,4 +31,4 @@ class CustomBatch():
         self.output = out
         self.err = err
         self.result = proc.returncode
-        print(out)
+        # print(out)

@@ -65,6 +65,7 @@ class CustomThread (threading.Thread):
                 self.api.is_scheduled = 2
 
                 self.api.set_agent()
+                print(dt, ' executor.bat was triggered.', '\n')
 
     def start(self):
         threading.Thread.start(self)
