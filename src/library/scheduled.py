@@ -49,20 +49,20 @@ class CustomThread (threading.Thread):
         self.api.login()
         self.api.get_agent()
 
-        self.delay = int(self.api.delay)
+        self.delay = int(self.api.agent["delay"])
 
-        if self.api.is_scheduled == "1":
-            dt = datetime.datetime.strptime(self.api.start_time.split('+')[0],
+        if self.api.agent["is_scheduled"] == "1":
+            dt = datetime.datetime.strptime(self.api.agent["start_time"].split('+')[0],
                                             "%Y-%m-%dT%H:%M:%S")
 
             if datetime.datetime.now() >= dt:
                 batch = CustomBatch(
-                    self.api.path, self.api.script_content, self.api.input_string)
+                    self.api.agent["path"], self.api.agent["script_content"], self.api.agent["script_inputs"])
                 batch.launch()
 
-                self.api.output = batch.output
-                self.api.result = batch.result
-                self.api.is_scheduled = 2
+                self.api.agent["output"] = batch.output
+                self.api.agent["result"] = batch.result
+                self.api.agent["is_scheduled"] = 2
 
                 self.api.set_agent()
                 print(dt, ' executor.bat was triggered.', '\n')

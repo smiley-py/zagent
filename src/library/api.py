@@ -5,28 +5,17 @@ import requests
 
 class CustomApi():
     def __init__(self, ID, APIURL, USERNAME, PASSWORD):
+        self.id = ID
         self.url = APIURL
         self.username = USERNAME
         self.password = PASSWORD
         self.token = ''
         self.is_login = 0
         self.msg = ''
-
-        self.id = ID
-        self.name = ''
-        self.description = ''
-        self.path = ''
-        self.script_content = ''
-        self.input_string = ''
-        self.delay = ''
-        self.output = ''
-        self.result = ''
-        self.start_time = ''
-        self.is_scheduled = 0
-        self.is_deleted = 0
+        self.agent = None
 
     def login(self):
-        self.api_login()
+        self.__api_login()
 
     def logout(self):
         self.is_login = 0
@@ -34,12 +23,12 @@ class CustomApi():
         self.msg = 'Good Bye..!!!'
 
     def get_agent(self):
-        self.api_get_agent()
+        self.__api_get_agent()
 
     def set_agent(self):
-        self.api_set_agent()
+        self.__api_set_agent()
 
-    def api_login(self):
+    def __api_login(self):
         result = ""
 
         try:
@@ -74,7 +63,7 @@ class CustomApi():
         except requests.exceptions.RequestException as err:
             self.msg = "OOps: Something Else " + str(err)
 
-    def api_get_agent(self):
+    def __api_get_agent(self):
         result = ""
 
         try:
@@ -92,18 +81,7 @@ class CustomApi():
                 result = json.loads(response.content)
                 self.is_login = 1
                 self.msg = "You get agent information"
-
-                self.name = result["name"]
-                self.description = result["description"]
-                self.path = result["path"]
-                self.script_content = result["script_content"]
-                self.script_inputs = result["script_inputs"]
-                self.delay = result["delay"]
-                self.output = result["output"]
-                self.result = result["result"]
-                self.start_time = result["start_time"]
-                self.is_scheduled = result["is_scheduled"]
-                self.is_deleted = result["is_deleted"]
+                self.agent = result
 
             except KeyError as e:
                 self.msg = "Some parameters is invalid."
@@ -117,7 +95,7 @@ class CustomApi():
         except requests.exceptions.RequestException as err:
             self.msg = "OOps: Something Else " + str(err)
 
-    def api_set_agent(self):
+    def __api_set_agent(self):
         result = ""
 
         try:
@@ -127,17 +105,17 @@ class CustomApi():
                 "Authorization": "Token " + self.token
             }
             values = {
-                "name": self.name,
-                "description": self.description,
-                "path": self.path,
-                "script_content": self.script_content,
-                "input_string": self.input_string,
-                "delay": self.delay,
-                "output": self.output,
-                "result": self.result,
-                "start_time": self.start_time,
-                "is_scheduled": self.is_scheduled,
-                "is_deleted": self.is_deleted
+                "name": self.agent["name"],
+                "description": self.agent["description"],
+                "path": self.agent["path"],
+                "script_content": self.agent["script_content"],
+                "script_inputs": self.agent["script_inputs"],
+                "delay": self.agent["delay"],
+                "output": self.agent["output"],
+                "result": self.agent["result"],
+                "start_time": self.agent["start_time"],
+                "is_scheduled": self.agent["is_scheduled"],
+                "is_deleted": self.agent["is_deleted"]
             }
             response = session.put(
                 url=self.url + 'agents/' + self.id + '/update/',

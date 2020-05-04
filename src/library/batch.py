@@ -2,10 +2,10 @@ from subprocess import Popen, PIPE
 
 
 class CustomBatch():
-    def __init__(self, path, script_content, input_string):
+    def __init__(self, path, script_content, script_inputs):
         self.path = path
         self.script_content = script_content
-        self.input_string = input_string
+        self.script_inputs = script_inputs
 
         myBat = open(self.path, 'w+')
         myBat.write(self.script_content)
@@ -17,7 +17,7 @@ class CustomBatch():
 
     def launch(self):
         # subprocess.Popen(self.path, creationflags=subprocess.CREATE_NEW_CONSOLE)
-        inputs = self.input_string.split(';')
+        inputs = self.script_inputs.split(';')
 
         proc = Popen(self.path, stdout=PIPE, stdin=PIPE,
                      stderr=PIPE, universal_newlines=True)
