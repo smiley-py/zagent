@@ -14,7 +14,7 @@ service1 = CustomScheduled(API)
 
 
 class MyShell(cmd.Cmd, object):
-    intro = 'Welcome to the agent shell.   Type help or ? to list commands.\n'
+    intro = 'Welcome to the Z Agent shell.   Type help or ? to list commands.\n'
     prompt = '[Shell Prompt] :'
 
     # ----- basic commands -----

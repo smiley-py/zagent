@@ -7,6 +7,7 @@ from .batch import CustomBatch
 
 class CustomScheduled():
     def __init__(self, API):
+        self.API = API
         self.thread_a = CustomThread(1, "Thread-1", API)
         self.msg = ''
 
@@ -21,6 +22,7 @@ class CustomScheduled():
     def stop(self):
         try:
             self.thread_a.stop()
+            self.thread_a = CustomThread(1, "Thread-1", self.API)
         except Exception as e:
             self.msg = "" + str(e)
 

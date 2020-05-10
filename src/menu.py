@@ -10,7 +10,7 @@ class CustomMenu():
         menu.append(
             '---------------------------------------------------------\n')
 
-        menu.append("*** Service Shell Help Menu ***\n")
+        menu.append("*** Z Agent Shell Help Menu ***\n")
 
         menu.append('exit \t\t close the system')
         menu.append('start \t\t start the scheduled service')
